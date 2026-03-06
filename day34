@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *top = NULL;
+
+void push(int x)
+{
+    struct Node *temp;
+    temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = x;
+    temp->next = top;
+    top = temp;
+}
+
+int pop()
+{
+    struct Node *temp;
+    int x;
+
+    if(top == NULL)
+    {
+        printf("Stack Underflow\n");
+        return -1;
+    }
+
+    temp = top;
+    x = temp->data;
+    top = top->next;
+    free(temp);
+    return x;
+}
+
+int evaluatePostfix(char exp[])
+{
+    int i = 0;
+    int op1, op2;
+
+    while(exp[i] != '\0')
+    {
+        if(isdigit(exp[i]))
+        {
+            push(exp[i] - '0');
+        }
+        else if(exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/')
+        {
+            op2 = pop();
+            op1 = pop();
+
+            switch(exp[i])
+            {
+                case '+': push(op1 + op2); break;
+                case '-': push(op1 - op2); break;
+                case '*': push(op1 * op2); break;
+                case '/': push(op1 / op2); break;
+            }
+        }
+        i++;
+    }
+
+    return pop();
+}
+
+int main()
+{
+    char exp[] = "231*+9-";
+    printf("Result = %d", evaluatePostfix(exp));
+    return 0;
+}
