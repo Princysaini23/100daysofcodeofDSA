@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int queue[n];
+    int stack[n];
+
+    // input queue elements
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &queue[i]);
+    }
+
+    int top = -1;
+
+    // push all queue elements into stack
+    for(int i = 0; i < n; i++) {
+        stack[++top] = queue[i];
+    }
+
+    // pop from stack to queue (reverses order)
+    for(int i = 0; i < n; i++) {
+        queue[i] = stack[top--];
+    }
+
+    // print reversed queue
+    for(int i = 0; i < n; i++) {
+        printf("%d ", queue[i]);
+    }
+
+    return 0;
+}
